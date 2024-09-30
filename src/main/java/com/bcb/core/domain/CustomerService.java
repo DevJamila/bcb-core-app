@@ -18,6 +18,8 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
+    private final BigDecimal POSTPAID_CREDIT_BASE_AMOUNT = BigDecimal.valueOf(20.00);
+
     @Autowired
     CustomerRepository repository;
 
@@ -52,6 +54,28 @@ public class CustomerService {
 
             BigDecimal currentCreditAmount = customerEntity.getCustomerPlan().getAmount();
             customerEntity.getCustomerPlan().setAmount(currentCreditAmount.add(amount));
+
+            repository.save(customerEntity);
+        }
+    }
+
+    public void switchPlanType(Long customerId) {
+        Optional<CustomerEntity> customerEntityWrapper = repository.findById(customerId);
+
+        if (customerEntityWrapper.isEmpty()) {
+            throw new BCBException("Resource not found", HttpStatus.NOT_FOUND);
+        } else {
+            CustomerEntity customerEntity = customerEntityWrapper.get();
+            CustomerPlanEntity plan = customerEntity.getCustomerPlan();
+
+            if (plan.getPlanType() == CustomerPlanTypeEnum.PREPAID) {
+                plan.setAmount(POSTPAID_CREDIT_BASE_AMOUNT.add(plan.getAmount()));
+                plan.setPlanType(CustomerPlanTypeEnum.POSTPAID);
+            } else {
+                plan.setPlanType(CustomerPlanTypeEnum.PREPAID);
+            }
+
+            customerEntity.setCustomerPlan(plan);
 
             repository.save(customerEntity);
         }

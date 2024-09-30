@@ -166,4 +166,57 @@ public class CustomerServiceTests {
 
         Mockito.verify(repository, Mockito.times(0)).save(Mockito.any());
     }
+
+    @Test
+    public void whenSwitchPlanFromPostpaidToPrepaidShouldSuccess() {
+        CustomerEntity customerEntity = new CustomerEntity(1L,
+                "Joana",
+                "joana@mail.com",
+                "44999888777",
+                "12312312312",
+                false,
+                null,
+                null,
+                new CustomerPlanEntity(
+                        1L,
+                        CustomerPlanTypeEnum.POSTPAID,
+                        BigDecimal.valueOf(40.50)
+                ));
+        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(customerEntity));
+
+
+        service.switchPlanType(1L);
+
+        Mockito.verify(repository, Mockito.times(1)).save(customerEntity);
+    }
+
+    @Test
+    public void whenSwitchPlanFromPrepaidToPostpaidShouldSuccess() {
+        CustomerEntity customerEntity = new CustomerEntity(1L,
+                "Joana",
+                "joana@mail.com",
+                "44999888777",
+                "12312312312",
+                false,
+                null,
+                null,
+                new CustomerPlanEntity(
+                        1L,
+                        CustomerPlanTypeEnum.PREPAID,
+                        BigDecimal.valueOf(10.00)
+                ));
+        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(customerEntity));
+
+
+        service.switchPlanType(1L);
+
+        Mockito.verify(repository, Mockito.times(1)).save(customerEntity);
+    }
+
+    @Test
+    public void whenSwitchPlanOfInvalidCustomerShouldThrowException() {
+        Mockito.when(repository.findById(1L)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(BCBException.class, () -> service.switchPlanType(1L));
+    }
 }

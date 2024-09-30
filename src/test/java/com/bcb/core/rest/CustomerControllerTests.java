@@ -112,4 +112,20 @@ public class CustomerControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @Test
+    public void whenRequestSwitchPlanShouldReturnSuccess() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/customers/1/plan"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Mockito.verify(service, Mockito.times(1)).switchPlanType(1L);
+    }
+
+    @Test
+    public void whenRequestSwitchPlanWithInvalidIdShouldReturnNotFound() throws Exception {
+        Mockito.doThrow(new BCBException("Resource not found", HttpStatus.NOT_FOUND)).when(service).switchPlanType(1L);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/customers/1/plan"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 }

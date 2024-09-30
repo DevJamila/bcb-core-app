@@ -53,4 +53,14 @@ public class CustomerController {
         }
     }
 
+    @PutMapping("/{id}/plan")
+    public ResponseEntity<String> switchPlanType(@PathVariable Long id) {
+        try {
+            service.switchPlanType(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (BCBException e) {
+            return new ResponseEntity<>(e.getMessage(), e.getStatus());
+        }
+    }
+
 }
