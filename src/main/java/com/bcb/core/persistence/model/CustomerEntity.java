@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "bcb_customer")
-public class Customer {
+public class CustomerEntity {
 
     @Id
     @SequenceGenerator(name = "bcb_customer_customer_id_seq", allocationSize = 1)
@@ -21,16 +21,20 @@ public class Customer {
     @Column(name = "customer_document")
     private String document;
     @Column(name = "is_company")
-    private boolean isCompany;
+    private Boolean isCompany;
     @Column(name = "company_name")
     private String companyName;
     @Column(name = "company_document")
     private String companyDocument;
 
-    public Customer() {
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private CustomerPlanEntity customerPlan;
+
+    public CustomerEntity() {
     }
 
-    public Customer(String name, String email, String phone, String document, boolean isCompany, String companyName, String companyDocument) {
+    public CustomerEntity(String name, String email, String phone, String document, Boolean isCompany, String companyName, String companyDocument, CustomerPlanEntity customerPlan) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -38,9 +42,10 @@ public class Customer {
         this.isCompany = isCompany;
         this.companyName = companyName;
         this.companyDocument = companyDocument;
+        this.customerPlan = customerPlan;
     }
 
-    public Customer(Long id, String name, String email, String phone, String document, boolean isCompany, String companyName, String companyDocument) {
+    public CustomerEntity(Long id, String name, String email, String phone, String document, Boolean isCompany, String companyName, String companyDocument, CustomerPlanEntity customerPlan) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -49,6 +54,7 @@ public class Customer {
         this.isCompany = isCompany;
         this.companyName = companyName;
         this.companyDocument = companyDocument;
+        this.customerPlan= customerPlan;
     }
 
     public Long getId() {
@@ -71,7 +77,7 @@ public class Customer {
         return document;
     }
 
-    public boolean isCompany() {
+    public Boolean isCompany() {
         return isCompany;
     }
 
@@ -81,5 +87,13 @@ public class Customer {
 
     public String getCompanyDocument() {
         return companyDocument;
+    }
+
+    public CustomerPlanEntity getCustomerPlan() {
+        return customerPlan;
+    }
+
+    public void setCustomerPlan(CustomerPlanEntity customerPlan) {
+        this.customerPlan = customerPlan;
     }
 }
