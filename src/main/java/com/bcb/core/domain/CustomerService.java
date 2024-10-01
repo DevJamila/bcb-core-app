@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    private final BigDecimal POSTPAID_CREDIT_BASE_AMOUNT = BigDecimal.valueOf(20.00);
+    private final BigDecimal POSTPAID_CREDIT_BASE_AMOUNT = BigDecimal.valueOf(4.00);
 
     @Autowired
     CustomerRepository repository;
@@ -79,6 +79,14 @@ public class CustomerService {
 
             repository.save(customerEntity);
         }
+    }
+
+    public void chargeCustomer(Long customerId, BigDecimal messageCost) {
+        Optional<CustomerEntity> entityWrapper = repository.findById(customerId);
+        CustomerEntity entity = entityWrapper.get();
+
+        entity.getCustomerPlan().setAmount(entity.getCustomerPlan().getAmount().subtract(messageCost));
+        repository.save(entity);
     }
 
     private void checkCustomerPlanAllowsCreditAddition(CustomerPlanEntity customerPlan) {

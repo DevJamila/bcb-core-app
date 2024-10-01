@@ -2,7 +2,7 @@ spring:
   application:
     name: bcb-core-app
   datasource:
-    url: jdbc:postgresql://localhost:5432/bcb_db
+    url: jdbc:postgresql://bcb-postgres-db:5432/bcb_db
     username: postgres
     password: bcbtest
     driver-class-name: org.postgresql.Driver
@@ -13,4 +13,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+bcb:
+  sms-simulator:
+    uri: "http://bcb-sms-simulator:8081"
 

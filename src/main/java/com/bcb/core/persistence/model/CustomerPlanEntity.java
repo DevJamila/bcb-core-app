@@ -25,11 +25,6 @@ public class CustomerPlanEntity {
     public CustomerPlanEntity() {
     }
 
-    public CustomerPlanEntity(CustomerPlanTypeEnum planType, BigDecimal amount) {
-        this.planType = planType;
-        this.amount = amount;
-    }
-
     public CustomerPlanEntity(Long id, CustomerPlanTypeEnum planType, BigDecimal amount) {
         this.id = id;
         this.planType = planType;
@@ -40,16 +35,20 @@ public class CustomerPlanEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public CustomerPlanTypeEnum getPlanType() {
         return planType;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
     public void setPlanType(CustomerPlanTypeEnum planType) {
         this.planType = planType;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     public void setAmount(BigDecimal amount) {
