@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    private final BigDecimal POSTPAID_CREDIT_BASE_AMOUNT = BigDecimal.valueOf(20.00);
+    private final BigDecimal POSTPAID_CREDIT_BASE_AMOUNT = BigDecimal.valueOf(4.00);
 
     @Autowired
     CustomerRepository repository;
