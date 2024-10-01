@@ -5,9 +5,12 @@ import com.bcb.core.exception.BCBException;
 import com.bcb.core.persistence.model.CustomerEntity;
 import com.bcb.core.persistence.model.MessageEntity;
 import com.bcb.core.persistence.repository.MessageRepository;
+import com.bcb.core.rest.client.SMSSimulatorRestClient;
+import com.bcb.core.rest.model.SMSRequestBody;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,6 +28,9 @@ public class MessageService {
     private CustomerService customerService;
 
     @Autowired
+    private SMSSimulatorRestClient restClient;
+
+    @Autowired
     ModelMapper modelMapper;
 
     public void sendMessage(Long customerId, String recipientPhone, Boolean isWhatsapp, String messageText) {
@@ -34,9 +40,29 @@ public class MessageService {
 
         payForMessage(customer);
 
-        saveMessage(buildMessage(customer, recipientPhone, isWhatsapp, messageText));
+        MessageEntity savedMessage = saveMessage(buildMessage(customer, recipientPhone, isWhatsapp, messageText));
 
-        // todo call sms simulator
+        try {
+            HttpStatusCode responseCode = restClient.sendSMS(customer.getPhone(), recipientPhone, messageText);
+
+            handleResponseStatus(responseCode, savedMessage);
+        } catch (Exception e) {
+            updateMessageStatus(MessageStatusEnum.CANCELED, savedMessage);
+        }
+
+    }
+
+    private void handleResponseStatus(HttpStatusCode code, MessageEntity message) {
+        if (code.is2xxSuccessful() ) {
+            updateMessageStatus(MessageStatusEnum.SUCCESS, message);
+        } else {
+            updateMessageStatus(MessageStatusEnum.CANCELED, message);
+        }
+    }
+
+    private void updateMessageStatus(MessageStatusEnum messageStatus, MessageEntity message) {
+        message.setMessageStatus(messageStatus);
+        this.saveMessage(message);
     }
 
     private MessageEntity buildMessage(Customer customer, String recipientPhone, Boolean isWhatsapp, String messageText) {
@@ -51,8 +77,8 @@ public class MessageService {
         return entity;
     }
 
-    private void saveMessage(MessageEntity entity) {
-        repository.save(entity);
+    private MessageEntity saveMessage(MessageEntity entity) {
+        return repository.save(entity);
     }
 
     private void payForMessage(Customer customer) {
