@@ -34,17 +34,6 @@ public class CustomerEntity {
     public CustomerEntity() {
     }
 
-    public CustomerEntity(String name, String email, String phone, String document, Boolean isCompany, String companyName, String companyDocument, CustomerPlanEntity customerPlan) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.document = document;
-        this.isCompany = isCompany;
-        this.companyName = companyName;
-        this.companyDocument = companyDocument;
-        this.customerPlan = customerPlan;
-    }
-
     public CustomerEntity(Long id, String name, String email, String phone, String document, Boolean isCompany, String companyName, String companyDocument, CustomerPlanEntity customerPlan) {
         this.id = id;
         this.name = name;
@@ -61,32 +50,64 @@ public class CustomerEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPhone() {
         return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getDocument() {
         return document;
     }
 
-    public Boolean isCompany() {
+    public void setDocument(String document) {
+        this.document = document;
+    }
+
+    public Boolean getCompany() {
         return isCompany;
+    }
+
+    public void setCompany(Boolean company) {
+        isCompany = company;
     }
 
     public String getCompanyName() {
         return companyName;
     }
 
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public String getCompanyDocument() {
         return companyDocument;
+    }
+
+    public void setCompanyDocument(String companyDocument) {
+        this.companyDocument = companyDocument;
     }
 
     public CustomerPlanEntity getCustomerPlan() {

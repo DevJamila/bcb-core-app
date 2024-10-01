@@ -81,6 +81,14 @@ public class CustomerService {
         }
     }
 
+    public void chargeCustomer(Long customerId, BigDecimal messageCost) {
+        Optional<CustomerEntity> entityWrapper = repository.findById(customerId);
+        CustomerEntity entity = entityWrapper.get();
+
+        entity.getCustomerPlan().setAmount(entity.getCustomerPlan().getAmount().subtract(messageCost));
+        repository.save(entity);
+    }
+
     private void checkCustomerPlanAllowsCreditAddition(CustomerPlanEntity customerPlan) {
         if (CustomerPlanTypeEnum.PREPAID != customerPlan.getPlanType()) {
             throw new BCBException("Customer plan type does not allow credit addition.", HttpStatus.BAD_REQUEST);
