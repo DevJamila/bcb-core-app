@@ -33,10 +33,10 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
+    @GetMapping("/{key}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable String key) {
         try {
-            Customer customer = service.getCustomerById(id);
+            Customer customer = service.getCustomerByKey(key);
             return new ResponseEntity<>(customer, HttpStatus.OK);
 
         } catch (BCBException e) {

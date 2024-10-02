@@ -53,7 +53,7 @@ public class CustomerControllerTests {
         Customer customer = new Customer();
         customer.setName("teste");
 
-        Mockito.when(service.getCustomerById(1L)).thenReturn(customer);
+        Mockito.when(service.getCustomerByKey("1")).thenReturn(customer);
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/customers/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -63,7 +63,7 @@ public class CustomerControllerTests {
     @Test
     public void whenRequestGetCustomerByIdWithInvalidIdShouldReturnNotFound() throws Exception {
 
-        Mockito.when(service.getCustomerById(2L)).thenThrow(new BCBException("Resource not found", HttpStatus.NOT_FOUND));
+        Mockito.when(service.getCustomerByKey("2")).thenThrow(new BCBException("Resource not found", HttpStatus.NOT_FOUND));
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/customers/2"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

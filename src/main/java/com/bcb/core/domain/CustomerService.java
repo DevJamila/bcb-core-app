@@ -42,6 +42,22 @@ public class CustomerService {
         }
     }
 
+    public Customer getCustomerByKey(String key) {
+        Long id;
+        try{
+            id = Long.parseLong(key);
+        } catch (NumberFormatException e) {
+            id = null;
+        }
+
+        Optional<CustomerEntity> customerEntity = repository.findByIdOrPhone(id, key);
+        if (customerEntity.isEmpty()) {
+            throw new BCBException("Resource not found", HttpStatus.NOT_FOUND);
+        } else {
+            return modelMapper.map(customerEntity.get(), Customer.class);
+        }
+    }
+
     public void addCredit(Long customerId, BigDecimal amount) {
         Optional<CustomerEntity> customerEntityWrapper = repository.findById(customerId);
 

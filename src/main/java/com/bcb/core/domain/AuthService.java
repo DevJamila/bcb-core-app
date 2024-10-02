@@ -13,8 +13,8 @@ public class AuthService {
     @Autowired
     private UserRepository repository;
 
-    public String attemptLogin() {
-        UserEntity user = repository.findByUsernameAndPassword("fulano@mail.com", "senha123");
+    public String attemptLogin(String username, String password) {
+        UserEntity user = repository.findByUsernameAndPassword(username, password);
 
         if (user == null) {
             throw new BCBException("Invalid username or password.", HttpStatus.FORBIDDEN);
