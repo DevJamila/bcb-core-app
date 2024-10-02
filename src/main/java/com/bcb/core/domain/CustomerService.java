@@ -2,6 +2,7 @@ package com.bcb.core.domain;
 
 import com.bcb.core.domain.model.Customer;
 import com.bcb.core.domain.model.CustomerPlanTypeEnum;
+import com.bcb.core.domain.model.Message;
 import com.bcb.core.exception.BCBException;
 import com.bcb.core.persistence.model.CustomerEntity;
 import com.bcb.core.persistence.model.CustomerPlanEntity;

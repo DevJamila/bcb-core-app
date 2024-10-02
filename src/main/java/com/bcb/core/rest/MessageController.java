@@ -1,15 +1,15 @@
 package com.bcb.core.rest;
 
 import com.bcb.core.domain.MessageService;
+import com.bcb.core.domain.model.Message;
 import com.bcb.core.exception.BCBException;
 import com.bcb.core.rest.model.SendMessageRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/message")
@@ -30,6 +30,17 @@ public class MessageController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (BCBException e) {
             return new ResponseEntity<>(e.getMessage(), e.getStatus());
+        }
+    }
+
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List> getMessagesByCustomerId(@PathVariable Long id) {
+        try {
+            List<Message> messages = service.getMessagesByCustomerId(id);
+            return new ResponseEntity<>(messages, HttpStatus.OK);
+
+        } catch (BCBException e) {
+            return new ResponseEntity<>(e.getStatus());
         }
     }
 }

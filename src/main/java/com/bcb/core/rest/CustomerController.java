@@ -2,6 +2,7 @@ package com.bcb.core.rest;
 
 import com.bcb.core.domain.CustomerService;
 import com.bcb.core.domain.model.Customer;
+import com.bcb.core.domain.model.Message;
 import com.bcb.core.exception.BCBException;
 import com.bcb.core.rest.model.AddCreditRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
