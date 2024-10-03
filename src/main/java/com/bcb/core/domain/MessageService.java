@@ -54,7 +54,7 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByCustomerId(Long customerId) {
-        List<MessageEntity> messages = repository.findByCustomer_Id(customerId);
+        List<MessageEntity> messages = repository.findByCustomer_IdOrderByRequestTimestampDesc(customerId);
 
         return messages.stream().map(entity -> modelMapper.map(entity, Message.class)).toList();
     }

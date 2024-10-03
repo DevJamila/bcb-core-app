@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
 
-    List<MessageEntity> findByCustomer_Id(Long id);
+    List<MessageEntity> findByCustomer_IdOrderByRequestTimestampDesc(Long id);
 
 }
