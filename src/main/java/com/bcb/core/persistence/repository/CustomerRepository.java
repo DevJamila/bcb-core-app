@@ -15,5 +15,6 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
     @EntityGraph(attributePaths = {"customerPlan"})
     Optional<CustomerEntity> findById(Long id);
 
-
+    @EntityGraph(attributePaths = {"customerPlan"})
+    Optional<CustomerEntity> findByIdOrPhone(Long id, String phone);
 }

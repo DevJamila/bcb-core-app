@@ -2,6 +2,7 @@ package com.bcb.core.domain;
 
 import com.bcb.core.domain.model.Customer;
 import com.bcb.core.domain.model.CustomerPlanTypeEnum;
+import com.bcb.core.domain.model.Message;
 import com.bcb.core.exception.BCBException;
 import com.bcb.core.persistence.model.CustomerEntity;
 import com.bcb.core.persistence.model.CustomerPlanEntity;
@@ -34,6 +35,22 @@ public class CustomerService {
 
     public Customer getCustomerById(Long id) {
         Optional<CustomerEntity> customerEntity = repository.findById(id);
+        if (customerEntity.isEmpty()) {
+            throw new BCBException("Resource not found", HttpStatus.NOT_FOUND);
+        } else {
+            return modelMapper.map(customerEntity.get(), Customer.class);
+        }
+    }
+
+    public Customer getCustomerByKey(String key) {
+        Long id;
+        try{
+            id = Long.parseLong(key);
+        } catch (NumberFormatException e) {
+            id = null;
+        }
+
+        Optional<CustomerEntity> customerEntity = repository.findByIdOrPhone(id, key);
         if (customerEntity.isEmpty()) {
             throw new BCBException("Resource not found", HttpStatus.NOT_FOUND);
         } else {

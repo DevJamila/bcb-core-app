@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MessageService {
@@ -50,6 +51,12 @@ public class MessageService {
             updateMessageStatus(MessageStatusEnum.CANCELED, savedMessage);
         }
 
+    }
+
+    public List<Message> getMessagesByCustomerId(Long customerId) {
+        List<MessageEntity> messages = repository.findByCustomer_IdOrderByRequestTimestampDesc(customerId);
+
+        return messages.stream().map(entity -> modelMapper.map(entity, Message.class)).toList();
     }
 
     private void handleResponseStatus(HttpStatusCode code, MessageEntity message) {

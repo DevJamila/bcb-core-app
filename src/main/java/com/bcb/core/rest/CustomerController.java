@@ -2,6 +2,7 @@ package com.bcb.core.rest;
 
 import com.bcb.core.domain.CustomerService;
 import com.bcb.core.domain.model.Customer;
+import com.bcb.core.domain.model.Message;
 import com.bcb.core.exception.BCBException;
 import com.bcb.core.rest.model.AddCreditRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,10 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
+    @GetMapping("/{key}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable String key) {
         try {
-            Customer customer = service.getCustomerById(id);
+            Customer customer = service.getCustomerByKey(key);
             return new ResponseEntity<>(customer, HttpStatus.OK);
 
         } catch (BCBException e) {
